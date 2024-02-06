@@ -72,8 +72,8 @@ class App {
                     speed: 0.5,
                     assetsPath: self.assetsPath,
                     loader: loader,
-                    animations: gltf.animations,
-                    clip: gltf.animations[0],
+                    // animations: gltf.animations,
+                    // clip: gltf.animations[0],
                     app: self,
                     name: 'knight',
                     npc: false
@@ -82,12 +82,12 @@ class App {
                 self.knight = new Player(options);
                 self.knight.object.visible = true;
 
-                self.knight.action = 'Dance';
+                // self.knight.action = 'Dance';
                 // const scale = 0.001;
                 // self.knight.object.scale.set(scale, scale, scale);
 
                 self.loadingBar.visible = false;
-                self.renderer.setAnimationLoop(self.render.bind(self));
+                // self.renderer.setAnimationLoop(self.render.bind(self));
             },
             function (xhr) {
                 self.loadingBar.progress = (xhr.loaded / xhr.total);
@@ -128,16 +128,10 @@ class App {
     }
 
     onSelect() {
-        if (this.knight === undefined) return;
+        if (this.knight === undefined || !this.reticle.visible) return;
 
-        if (this.reticle.visible) {
-            if (this.knight.object.visible) {
-                this.knight.newPath(this.reticle.position);
-            } else {
-                this.knight.object.position.copy(this.reticle.position);
-                this.knight.object.visible = true;
-            }
-        }
+        this.knight.newPath(this.reticle.position);
+        this.knight.object.visible = true; // Ensure the model is visible
     }
 
     requestHitTestSource() {

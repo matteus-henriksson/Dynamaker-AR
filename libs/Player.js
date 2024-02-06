@@ -101,52 +101,7 @@ class Player{
 	}
 
 	newPath(pt){
-        const player = this.object;
-        
-        if (this.pathfinder===undefined){
-            this.calculatedPath = [ pt.clone() ];
-            //Calculate target direction
-            this.setTargetDirection();
-            this.action = 'walk';
-            return;
-        }
-        
-		//console.log(`New path to ${pt.x.toFixed(1)}, ${pt.y.toFixed(2)}, ${pt.z.toFixed(2)}`);	
-
-		const targetGroup = this.pathfinder.getGroup(this.ZONE, pt);
-		const closestTargetNode = this.pathfinder.getClosestNode(pt, this.ZONE, targetGroup);
-		
-		// Calculate a path to the target and store it
-		this.calculatedPath = this.pathfinder.findPath(player.position, pt, this.ZONE, this.navMeshGroup);
-
-		const self = this;
-		
-		if (this.calculatedPath && this.calculatedPath.length) {
-			this.action = 'walk';
-			
-			const pt = this.calculatedPath[0].clone();
-			this.setTargetDirection()
-			
-			if (this.app.debug.showPath && !this.npc){
-				this.showPathLines();
-			}
-		} else {
-			this.action = 'idle';
-			
-            if (self.pathfinder){
-                const closestPlayerNode = self.pathfinder.getClosestNode(player.position, this.ZONE, this.navMeshGroup);
-                const clamped = new THREE.Vector3();
-                this.pathfinder.clampStep(
-                    player.position, 
-                    pt.clone(), 
-                    closestPlayerNode, 
-                    this.ZONE, 
-                    this.navMeshGroup, 
-                    clamped);
-            }
-            
-			if (this.pathLines) this.app.scene.remove(this.pathLines);
-		}
+		this.object.position.copy(pt);
 	}
 	
 	set action(name){
