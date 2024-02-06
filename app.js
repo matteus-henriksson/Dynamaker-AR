@@ -15,7 +15,10 @@ class App{
         
         this.clock = new THREE.Clock();
         
-		this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 20 );
+		this.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.01, 200 );
+        this.camera.updateProjectionMatrix();   
+        this.camera.position.set(0, -2, 6); // Adjust these values
+        this.camera.lookAt(new THREE.Vector3(50, 50, 100)); // Look at the origin or the center of your model
 		
 		this.scene = new THREE.Scene();
         
@@ -64,7 +67,9 @@ class App{
 			`Home_Lift_Compact.glb`,
 			// called when the resource is loaded
 			function ( gltf ) {
-				const object = gltf.scene.children[5];
+                console.log(gltf.scene); // Check the structure of the loaded GLTF scene
+
+                const object = gltf.scene.children[0];
 				
 				object.traverse(function(child){
 					if (child.isMesh){
@@ -75,21 +80,14 @@ class App{
 				
 				const options = {
 					object: object,
-					speed: 0.5,
-					animations: gltf.animations,
-					clip: gltf.animations[0],
 					app: self,
 					name: 'knight',
-					npc: false
+					npc: false,
 				};
 				
 				self.knight = new Player(options);
-                self.knight.object.visible = false;
-				
-				self.knight.action = 'Dance';
-				const scale = 0.003;
-				self.knight.object.scale.set(scale, scale, scale); 
-				
+                self.knight.object.visible = true;
+
                 self.loadingBar.visible = false;
 			},
 			// called while loading is progressing
@@ -175,7 +173,7 @@ class App{
             //console.log( ev );   
             self.ui.updateElement('info', `swipe ${ev.direction}` );
             if (self.knight.object.visible){
-                self.knight.object.visible = false;
+                self.knight.object.visible = true;
                 self.scene.remove( self.knight.object ); 
             }
         });
