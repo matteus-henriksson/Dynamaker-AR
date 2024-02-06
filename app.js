@@ -87,7 +87,7 @@ class App {
                 // self.knight.object.scale.set(scale, scale, scale);
 
                 self.loadingBar.visible = false;
-                // self.renderer.setAnimationLoop(self.render.bind(self));
+                self.renderer.setAnimationLoop(self.render.bind(self));
             },
             function (xhr) {
                 self.loadingBar.progress = (xhr.loaded / xhr.total);
