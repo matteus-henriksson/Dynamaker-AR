@@ -1,32 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Dynamaker AR</title>
-		<meta charset="utf-8">
-        <!--favicon -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <link rel="apple-touch-icon" sizes="180x180" href="../../css/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
-        <!-- end favicon -->
-        <style>
-            body{
-                margin: 0;
-                background-color: #000;
-            }
-        </style>
-	</head>
-	<body>
-        <script src="./libs/fas.js"></script>
-        <script type="module">
-            import { App } from './app.js';
 
-            document.addEventListener("DOMContentLoaded", function(){
-                const app = new App();
-                window.app = app;
-            });
-        </script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="model-viewer-container">
+
+        <model-viewer src="assets/Home_Lift_Compact.glb" poster="assets/ShopifyModels/Home_Lift_Compact.webp"
+            tone-mapping="commerce" shadow-intensity="1" ar camera-controls touch-action="pan-y"
+            alt="A 3D model carousel">
+
+            <button slot="ar-button" id="ar-button">
+                View in your space
+            </button>
+
+            <div id="ar-prompt">
+                <img src="assets/hand.png">
+            </div>
+
+            <button id="ar-failure">
+                AR is not tracking!
+            </button>
+
+            <div class="slider">
+                <div class="slides">
+                    <button class="slide selected" onclick="switchSrc(this, 'Home_Lift_Compact')" style="background-image: url('assets/Home_Lift_Compact.webp');">
+                    
+                    <button class="slide" onclick="switchSrc(this, 'Home_Lift_Access')" style="background-image: url('assets/Home_Lift_Access.webp');">
+                    
+                    <button class="slide" onclick="switchSrc(this, 'Home_Lift')" style="background-image: url('assets/Home_Lift.webp');">
+
+                    </button><button class="slide" onclick="switchSrc(this, 'knight2')">
+                    </button>
+                </div>
+            </div>
+        </model-viewer>
+    </div>
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script type="module">
+        const modelViewer = document.querySelector("model-viewer");
+
+        window.switchSrc = (element, name) => {
+            const base = "assets/" + name;
+            modelViewer.src = base + '.glb';
+            modelViewer.poster = base + '.webp';
+            const slides = document.querySelectorAll(".slide");
+            slides.forEach((element) => { element.classList.remove("selected"); });
+            element.classList.add("selected");
+        };
+
+        document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
+            // Keep slider interactions from affecting the XR scene.
+            ev.preventDefault();
+        });
+    </script>
+</body>
+
 </html>
